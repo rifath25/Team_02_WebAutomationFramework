@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-/**
- * Created by mrahman on 04/02/18.
- */
 
 public class ConnectToSqlDB {
 
@@ -21,7 +18,9 @@ public class ConnectToSqlDB {
 
     public static Properties loadProperties() throws IOException{
         Properties prop = new Properties();
-        InputStream ism = new FileInputStream("C:\\Users\\tsult\\IdeaProjects\\WebAutomationFramework_Team2\\Generic\\src\\secret.properties");
+
+        InputStream ism = new FileInputStream("/Users/fortunecookie/IdeaProjects/WebAutomationFramework_Team2/Generic/src/secret.properties");
+
         //Users/mrahman/develop/pnt/Web-Automation-November2018/Generic/src/secret.properties
         prop.load(ism);
         ism.close();
@@ -34,7 +33,7 @@ public class ConnectToSqlDB {
         String url = prop.getProperty("MYSQLJDBC.url");
         String userName = prop.getProperty("MYSQLJDBC.userName");
         String password = prop.getProperty("MYSQLJDBC.password");
-//        Class.forName(driverClass);
+        //Class.forName(driverClass);
         connect = DriverManager.getConnection(url,userName,password);
         System.out.println("Database is connected");
         return connect;
@@ -136,7 +135,9 @@ public class ConnectToSqlDB {
         return data;
     }
 
-    public void insertDataFromArrayListToSqlTable(List<String> list, String tableName, String columnName)
+
+    public void insertDataFromArrayListToSqlTable(List<Student> list, String tableName, String columnName)
+
     {
         try {
             connectToSqlDatabase();
