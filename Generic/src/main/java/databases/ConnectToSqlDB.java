@@ -19,9 +19,10 @@ public class ConnectToSqlDB {
     public static PreparedStatement ps = null;
     public static ResultSet resultSet = null;
 
-    public static Properties loadProperties() throws IOException {
+    public static Properties loadProperties() throws IOException{
         Properties prop = new Properties();
-        InputStream ism = new FileInputStream("../Generic/src/main/secret.properties");
+        InputStream ism = new FileInputStream("C:\\Users\\tsult\\IdeaProjects\\WebAutomationFramework_Team2\\Generic\\src\\secret.properties");
+        //Users/mrahman/develop/pnt/Web-Automation-November2018/Generic/src/secret.properties
         prop.load(ism);
         ism.close();
         return prop;
@@ -39,7 +40,7 @@ public class ConnectToSqlDB {
         return connect;
     }
 
-    public List<String> readDataBase(String tableName, String columnName)throws Exception {
+    public List<String> readDataBase(String tableName, String columnName)throws Exception{
         List<String> data = new ArrayList<String>();
 
         try {
@@ -86,8 +87,7 @@ public class ConnectToSqlDB {
             connectToSqlDatabase();
             ps = connect.prepareStatement("DROP TABLE IF EXISTS `"+tableName+"`;");
             ps.executeUpdate();
-            //ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`SortingNumbers` bigint(20) DEFAULT NULL,  PRIMARY KEY (`ID`),"+columnName+" int(50) );");
-            ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` ("+columnName+" int(50) );");
+            ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`SortingNumbers` bigint(20) DEFAULT NULL,  PRIMARY KEY (`ID`) );");
             ps.executeUpdate();
             for(int n=0; n<ArrayData.length; n++){
                 ps = connect.prepareStatement("INSERT INTO "+tableName+" ( "+columnName+" ) VALUES(?)");
@@ -120,7 +120,7 @@ public class ConnectToSqlDB {
         }
     }
 
-    public List<String> directDatabaseQueryExecute(String passQuery, String dataColumn)throws Exception {
+    public List<String> directDatabaseQueryExecute(String passQuery,String dataColumn)throws Exception{
         List<String> data = new ArrayList<String>();
 
         try {
@@ -136,38 +136,15 @@ public class ConnectToSqlDB {
         return data;
     }
 
-    /*public void insertDataFromArrayListToSqlTable(List<Student> list, String tableName, String columnName)
-    {
-        try {
-            connectToSqlDatabase();
-            ps = connect.prepareStatement("DROP TABLE IF EXISTS `"+tableName+"`;");
-            ps.executeUpdate();
-            //ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`SortingNumbers` bigint(20) DEFAULT NULL,  PRIMARY KEY (`ID`) );");
-            ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` ("+columnName+" int(50) );");
-            ps.executeUpdate();
-            for(Student st:list){
-                ps = connect.prepareStatement("INSERT INTO "+tableName+" ( "+columnName+" ) VALUES(?)");
-                ps.setObject(1,st);
-                ps.executeUpdate();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }*/
     public void insertDataFromArrayListToSqlTable(List<String> list, String tableName, String columnName)
     {
         try {
             connectToSqlDatabase();
             ps = connect.prepareStatement("DROP TABLE IF EXISTS `"+tableName+"`;");
             ps.executeUpdate();
-            //ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`SortingNumbers` bigint(20) DEFAULT NULL,  PRIMARY KEY (`ID`) );");
-            ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` ("+columnName+" varchar (100) );");
+            ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`SortingNumbers` bigint(20) DEFAULT NULL,  PRIMARY KEY (`ID`) );");
             ps.executeUpdate();
-            for(Object st:list){
+            for(String st:list){
                 ps = connect.prepareStatement("INSERT INTO "+tableName+" ( "+columnName+" ) VALUES(?)");
                 ps.setObject(1,st);
                 ps.executeUpdate();
@@ -181,7 +158,28 @@ public class ConnectToSqlDB {
             e.printStackTrace();
         }
     }
+    public void insertStringDataFromArrayListToSqlTable(List<String> list, String tableName, String columnName)
+    {
+        try {
+            connectToSqlDatabase();
+            ps = connect.prepareStatement("DROP TABLE IF EXISTS `"+tableName+"`;");
+            ps.executeUpdate();
+            ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`"+columnName+"` varchar(30) DEFAULT NULL, PRIMARY KEY (`ID`) );");
+            ps.executeUpdate();
+            for(String st:list){
+                ps = connect.prepareStatement("INSERT INTO "+tableName+" ( "+columnName+" ) VALUES(?)");
+                ps.setObject(1,st);
+                ps.executeUpdate();
+            }
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void insertProfileToSqlTable(String tableName, String columnName1, String columnName2)
     {
@@ -202,8 +200,8 @@ public class ConnectToSqlDB {
         }
     }
 
-    public static List<User> readUserProfileFromSqlTable()throws IOException, SQLException, ClassNotFoundException {
-        List<User> list = new ArrayList<>();
+    public static List<User> readUserProfileFromSqlTable()throws IOException, SQLException, ClassNotFoundException{
+        List<User> list = new ArrayList<User>();
         User user = null;
         try{
             Connection conn = connectToSqlDatabase();
