@@ -18,7 +18,9 @@ public class ConnectToSqlDB {
 
     public static Properties loadProperties() throws IOException{
         Properties prop = new Properties();
+
         InputStream ism = new FileInputStream("/Users/fortunecookie/IdeaProjects/WebAutomationFramework_Team2/Generic/src/secret.properties");
+
         //Users/mrahman/develop/pnt/Web-Automation-November2018/Generic/src/secret.properties
         prop.load(ism);
         ism.close();
@@ -84,8 +86,7 @@ public class ConnectToSqlDB {
             connectToSqlDatabase();
             ps = connect.prepareStatement("DROP TABLE IF EXISTS `"+tableName+"`;");
             ps.executeUpdate();
-            //ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`SortingNumbers` bigint(20) DEFAULT NULL,  PRIMARY KEY (`ID`),"+columnName+" int(50) );");
-            ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` ("+columnName+" int(50) );");
+            ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`SortingNumbers` bigint(20) DEFAULT NULL,  PRIMARY KEY (`ID`) );");
             ps.executeUpdate();
             for(int n=0; n<ArrayData.length; n++){
                 ps = connect.prepareStatement("INSERT INTO "+tableName+" ( "+columnName+" ) VALUES(?)");
@@ -134,7 +135,9 @@ public class ConnectToSqlDB {
         return data;
     }
 
+
     public void insertDataFromArrayListToSqlTable(List<Student> list, String tableName, String columnName)
+
     {
         try {
             connectToSqlDatabase();
@@ -142,7 +145,7 @@ public class ConnectToSqlDB {
             ps.executeUpdate();
             ps = connect.prepareStatement("CREATE TABLE `"+tableName+"` (`ID` int(11) NOT NULL AUTO_INCREMENT,`SortingNumbers` bigint(20) DEFAULT NULL,  PRIMARY KEY (`ID`) );");
             ps.executeUpdate();
-            for(Student st:list){
+            for(String st:list){
                 ps = connect.prepareStatement("INSERT INTO "+tableName+" ( "+columnName+" ) VALUES(?)");
                 ps.setObject(1,st);
                 ps.executeUpdate();
